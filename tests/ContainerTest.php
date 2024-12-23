@@ -29,12 +29,13 @@ final class ContainerTest extends TestCase
 
     public function testHasRouterService(): void
     {
+        $this->assertTrue($this->container->has('Router'));
+
         $this->assertArrayHasKey(
             'Router',
             $this->container->getServices(),
             "Instance of " . \Espresso\Service\RouterService::class . " not found"
         );
-
     }
 
     public function testCanGetRouterService()
@@ -46,13 +47,16 @@ final class ContainerTest extends TestCase
 
         $this->assertInstanceOf(
             \Espresso\Service\RouterService::class,
-            $this->container->getInstance('Router'),
+            $this->container->get('Router'),
             "Instance of " . 'Router'. " not found"
         );
+    }
 
+    public function testCanGetInstanceOfRouterService()
+    {
         $this->assertInstanceOf(
             \Espresso\Service\RouterService::class,
-            $this->container->get('Router'),
+            $this->container->getInstance('Router'),
             "Instance of " . 'Router'. " not found"
         );
     }

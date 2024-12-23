@@ -1,0 +1,16 @@
+{
+    "name": "ldh/espresso-cms",
+    "description": "A small cms for small development projects",
+    "type": "project",
+    "require-dev": {
+        "symfony/var-dumper": "^7.2",
+        "phpunit/phpunit": "^11.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Espresso\\": "src/"
+        }
+    },
+    "require": {}
+}

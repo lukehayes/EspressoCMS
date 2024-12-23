@@ -1,5 +1,5 @@
 <?php
-namespace App\Service;
+namespace Espresso\Service;
 
 use Exception;
 use Psr\Container\NotFoundExceptionInterface;

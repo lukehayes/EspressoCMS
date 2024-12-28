@@ -13,7 +13,7 @@ final class RouteTest  extends TestCase
     {
         // TODO Implement Router Tests.
 
-        $this->testRoute = new Route('home', '/', 'TestController', 'TestAction', 'GET');
+        $this->testRoute = new Route('/', 'TestController', 'TestAction', 'home');
     }
 
     public function testCanGetRouteName() : void

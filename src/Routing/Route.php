@@ -27,17 +27,17 @@ class Route
     /**
      * Constructor.
      *
-     * @param string $name          The name associated with the route.
      * @param string $path          The path of the route.
      * @param string $controller    The path of the route.
      * @param string $action        The action of the route.
+     * @param string $name          The name associated with the route.
      */
-    public function __construct($name, $path, $controller, $action)
+    public function __construct($path, $controller, $action, $name)
     {
-        $this->name       = $name;
         $this->path       = $path;
         $this->action     = $action;
         $this->controller = $controller;
+        $this->name       = $name;
     }
 
     /**

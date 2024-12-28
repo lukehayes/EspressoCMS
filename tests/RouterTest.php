@@ -13,9 +13,6 @@ final class RouterTest  extends TestCase
     public function setup() : void
     {
         // TODO Implement Router Tests.
-        //$this->markTestIncomplete();
-
-        $this->markTestIncomplete();
 
         $this->router = new Router();
         $this->testRoute = new Route('home', '/', 'TestController', 'TestAction', 'GET');

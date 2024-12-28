@@ -32,9 +32,9 @@ class Route
      * @param string $controller    The path of the route.
      * @param string $action        The action of the route.
      * @param string $methods       The methods that this route applies to
-     *                              delimited by a '|' character.
+     *                              delimited by a '|' character. Defaults to GET.
      */
-    public function __construct($name, $path, $controller, $action, $methods)
+    public function __construct($name, $path, $controller, $action, $methods = 'GET')
     {
         $this->name       = $name;
         $this->path       = $path;

@@ -96,7 +96,6 @@ class Router
      */
     public function get(Route $route) : bool
     {
-
         $method = 'GET';
 
         if(array_key_exists($route->getPath(), $this->routes[$method]))
@@ -110,27 +109,26 @@ class Router
      * Does a route with a specific name exist?
      *
      * @param string $name.
+     * @param string $method. Defaults to GET.
      *
      *@return bool.
      */
-    public function hasNamedRoute(string $name) : bool
+    public function hasNamedRoute(string $name, string $method = "GET") : bool
     {
-        // TODO Currently only checks GET routes. Needs to add
-        // other methods like POST also.
-
-        return !!$this->getNamedRoute($name);
+        return !!$this->getNamedRoute($name, $method);
     }
 
     /**
      * Does a route with a specific name exist?
      *
      * @param string $name.
+     * @param string $method. Defaults to GET.
      *
      * @return ?Array
      */
-    public function getNamedRoute(string $name) : ?Array
+    public function getNamedRoute(string $name, $method = 'GET') : ?Array
     {
-        return array_filter($this->routes['GET'], function($route) use($name)
+        return array_filter($this->routes[$method], function($route) use($name)
         {
             return $route->getName() == $name;
         });
@@ -147,6 +145,7 @@ class Router
     public function post(Route $route) : bool
     {
         $method = 'POST';
+
         if(array_key_exists($route->getPath(), $this->routes[$method]))
             return false;
 

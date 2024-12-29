@@ -18,7 +18,7 @@ final class RouterTest  extends TestCase
         $this->router->get($this->testRoute);
     }
 
-    public function testDoesHaveNamedRoute()
+    public function testDoesHaveNamedRouteForGet()
     {
         $this->assertTrue($this->router->hasNamedRoute('home'));
         $this->assertFalse($this->router->hasNamedRoute('notset'));

@@ -21,9 +21,6 @@ class Route
     /** @var string|null The name of the route. */
     private $name = null;
 
-    /** @var array */
-    private $methods = [];
-
     /**
      * Constructor.
      *

@@ -172,4 +172,14 @@ class Router
     {
         return $this->request->server->get('REQUEST_METHOD') === 'POST';
     }
+
+    /**
+    * Get the current request.
+    *
+    * @return Request.
+    */
+    public function getRequest() : Request
+    {
+        return $this->request;
+    }
 }

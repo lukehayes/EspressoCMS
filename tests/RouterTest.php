@@ -55,4 +55,10 @@ final class RouterTest  extends TestCase
         $this->assertArrayHasKey($this->testRoute->getPath(), $this->router->getRoutes()['GET']);
     }
 
+    public function testCanGetCurrentRequest() : void
+    {
+        $this->assertNotNull($this->router->getRequest());
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\Request::class, $this->router->getRequest());
+    }
+
 }

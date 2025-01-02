@@ -84,9 +84,9 @@ class Route
     /**
      * Get the routes action.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAction() : ?string
+    public function getAction() : string|null
     {
         return $this->action;
     }
@@ -94,9 +94,9 @@ class Route
     /**
      * Get the routes controller.
      *
-     * @return string
+     * @return string|callable
      */
-    public function getController() : ?string
+    public function getController() : string|callable
     {
         return $this->controller;
     }

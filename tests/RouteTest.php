@@ -35,4 +35,11 @@ final class RouteTest  extends TestCase
     {
         $this->assertEquals($this->testRoute->getAction(), 'TestAction');
     }
+
+    public function testRouteObjectIsCallback() : void
+    {
+        $callbackRoute = new Route('/', 'Controller@action', 'home');
+
+        $this->assertNotNull($callbackRoute->isCallback());
+    }
 }

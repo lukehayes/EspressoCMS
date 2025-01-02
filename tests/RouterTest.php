@@ -6,27 +6,43 @@ use Espresso\Routing\Route;
 
 final class RouterTest  extends TestCase
 {
-    public $router = NULL;
+    public $routeClassRouter = NULL;
+    public $routeClass       = NULL;
 
-    public $testRoute = NULL;
+    public $routeCallbackRouter = NULL;
+    public $routeCallback       = NULL;
 
     public function setup() : void
     {
-        $this->router = new Router();
-        $this->testRoute = new Route('/', 'TestController', 'TestAction', 'home');
+        $this->routeClassRouter = new Router();
+        $this->routeClass = new Route('/', 'TestController@index', 'home');
 
-        $this->router->get($this->testRoute);
+        $this->routeCallbackRouter = new Router();
+        $this->routeCallback = new Route('/', function() { dump("Route Callback"); }, 'home');
+
+        $this->routeClassRouter->get($this->routeClass);
     }
 
     public function testDoesHaveNamedRouteForGet()
     {
-        $this->assertTrue($this->router->hasNamedRoute('home', 'GET'));
-        $this->assertFalse($this->router->hasNamedRoute('notset', 'GET'));
+        $this->assertTrue($this->routeClassRouter->hasNamedRoute('home', 'GET'));
+        $this->assertFalse($this->routeClassRouter->hasNamedRoute('notset', 'GET'));
+
+        $this->assertTrue($this->routeClassRouter->hasNamedRoute('home', 'GET'));
+        $this->assertFalse($this->routeClassRouter->hasNamedRoute('notset', 'GET'));
     }
 
     public function testCanGetNamedRoute()
     {
-        $route = $this->router->getNamedRoute('home', 'GET');
+        // Tests for Routes using "controller@action" syntax
+        $route = $this->routeClassRouter->getNamedRoute('home', 'GET');
+
+        $this->assertIsArray($route, 'Router::getNamedRoute() should return an array.');
+        $this->assertNotEmpty($route, 'Named route array is empty.');
+        $this->assertCount(1, $route, 'Router::getNamedRoute() should return an array with a single element.');
+
+        // Tests for Routes using "callable" syntax
+        $route = $this->routeCallbackRouter->getNamedRoute('home', 'GET');
 
         $this->assertIsArray($route, 'Router::getNamedRoute() should return an array.');
         $this->assertNotEmpty($route, 'Named route array is empty.');

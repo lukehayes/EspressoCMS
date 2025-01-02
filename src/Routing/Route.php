@@ -21,19 +21,53 @@ class Route
     /** @var string|null The name of the route. */
     private $name = null;
 
+    /** @var bool|null The name of the route. */
+    private bool $isCallback = false;
+
+    /**
+    * String character that is used to split the controller callback argument.
+    *
+    * @var string The name of the route.
+    * */
+    const string SEPERATOR = "@";
+
     /**
      * Constructor.
      *
-     * @param string $path          The path of the route.
-     * @param string $controller    The path of the route.
-     * @param string $action        The action of the route.
-     * @param string $name          The name associated with the route.
+     * @param string $path         The path of the route.
+     *
+     * @param mixed $controller    The path of the route.
+     *                             Can either be a string with the format 'controller@action',
+     *                             or a callable.
+     *
+     * @param string $name         The name associated with the route.
      */
-    public function __construct($path, $controller, $action, $name)
+    public function __construct($path, mixed $controller, $name)
     {
+
+        // TODO Implement callable controller functionality.
+        if(is_string($controller))
+        {
+            if (str_contains($controller, self::SEPERATOR)) {
+                $this->isCallback = true;
+                $splitString = (preg_split("/@/", $controller));
+                $this->controller = $splitString[0];
+                $this->action = $splitString[1];
+            } else {
+                $this->isCallback = false;
+                $this->controller = $controller;
+            }
+        }else if(is_callable($controller))
+        {
+            $this->isCallback = true;
+            $this->controller = $controller;
+        }
+
+        
+
         $this->path       = $path;
-        $this->action     = $action;
-        $this->controller = $controller;
+        //$this->action     = $action;
+        //$this->controller = $controller;
         $this->name       = $name;
     }
 
@@ -75,5 +109,15 @@ class Route
     public function getName() : ?string
     {
         return $this->name;
+    }
+
+    /**
+     * Returns whether this route has been defined by a callback/callable.
+     *
+     * @return bool.
+     */
+    public function isCallback() : bool
+    {
+        return $this->isCallback;
     }
 }

@@ -124,14 +124,16 @@ class Router
      * @param string $name.
      * @param string $method. Defaults to GET.
      *
-     * @return ?Array
+     * @return ?Route
      */
-    public function getNamedRoute(string $name, $method = 'GET') : ?Array
+    public function getNamedRoute(string $name, $method = 'GET') : ?Route
     {
-        return array_filter($this->routes[$method], function($route) use($name)
+        $route = array_filter($this->routes[$method], function($route) use($name)
         {
             return $route->getName() == $name;
         });
+
+        return empty($route) ? $route[0] : null;
     }
 
     /**

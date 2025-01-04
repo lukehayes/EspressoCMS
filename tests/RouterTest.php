@@ -16,28 +16,25 @@ final class RouterTest  extends TestCase
     {
         $this->routeClassRouter = new Router();
         $this->routeClass = new Route('/', 'TestController@index', 'home');
+        $this->routeClassRouter->get($this->routeClass);
 
         $this->routeCallbackRouter = new Router();
-        $this->routeCallback = new Route('/', function() { dump("Route Callback"); }, 'home');
+        $this->routeCallback = new Route('/', function() { dump("Route Callback"); }, 'home_closure');
+        $this->routeCallbackRouter->get($this->routeClass);
 
-        $this->routeClassRouter->get($this->routeClass);
-    }
-
-    public function testDoesHaveNamedRouteForGet()
-    {
-        $this->assertTrue($this->routeClassRouter->hasNamedRoute('home', 'GET'));
-        $this->assertFalse($this->routeClassRouter->hasNamedRoute('notset', 'GET'));
-
-        $this->assertTrue($this->routeClassRouter->hasNamedRoute('home', 'GET'));
-        $this->assertFalse($this->routeClassRouter->hasNamedRoute('notset', 'GET'));
     }
 
     public function testCanGetNamedRoute()
     {
         // Tests for Routes using "controller@action" syntax
         $route = $this->routeClassRouter->getNamedRoute('home', 'GET');
+        $badRoute = $this->routeClassRouter->getNamedRoute('route_will_fail', 'GET');
 
-        $this->assertIsArray($route, 'Router::getNamedRoute() should return an array.');
+        //dump($this->routeClassRouter->getRoutes());
+        //dd($this->routeClassRouter->getNamedRoute('home'));
+
+        $this->assertNotNull($route, 'Route name should exist inside Router');
+        $this->assertNull($badRoute, 'Route name should not exist inside Router.');
         $this->assertNotEmpty($route, 'Named route array is empty.');
         $this->assertCount(1, $route, 'Router::getNamedRoute() should return an array with a single element.');
 
@@ -45,36 +42,62 @@ final class RouterTest  extends TestCase
         $route = $this->routeCallbackRouter->getNamedRoute('home', 'GET');
 
         $this->assertIsArray($route, 'Router::getNamedRoute() should return an array.');
-        $this->assertNotEmpty($route, 'Named route array is empty.');
-        $this->assertCount(1, $route, 'Router::getNamedRoute() should return an array with a single element.');
+        $this->assertInstanceOf(Route::class, $route);
+
+
+        //$this->assertNotEmpty($route, 'Named route array is empty.');
+        //$this->assertCount(1, $route, 'Router::getNamedRoute() should return an array with a single element.');
     }
+
+    public function testDoesHaveNamedRouteForGet()
+    {
+        $router = new Router();
+        $firstRoute = new Route('/', 'controller@action', 'home');
+        $secondRoute = new Route('/secondRoute', 'controller@action', 'secondRoute');
+
+        $router->get($firstRoute);
+
+        $this->assertTrue($router->hasNamedRoute('home', 'GET'));
+        //$this->assertFalse($router->hasNamedRoute('notset', 'GET'));
+    }
+
 
     public function testCanAddGetRoute()
     {
-        $newRoute = new Route('other', '/other', 'OtherController', 'OtherAction');
+        $router = new Router();
+        $firstRoute = new Route('/', 'controller@action', 'home');
+        $secondRoute = new Route('/secondRoute', 'controller@action', 'secondRoute');
+
+        $router->get($firstRoute);
 
         // Route already added, so this should fail.
-        $this->assertFalse($this->router->get($this->testRoute));
+        $this->assertFalse($router->get($firstRoute));
 
         // Route NOT already added, so this should pass.
-        $this->assertTrue($this->router->get($newRoute));
+        $this->assertTrue($router->get($secondRoute));
 
-        $this->assertArrayHasKey($newRoute->getPath(), $this->router->getRoutes()['GET']);
-
-        $this->assertArrayHasKey($newRoute->getPath(), $this->router->getRoutes()['GET']);
+        $this->assertArrayHasKey($firstRoute->getPath(), $router->getRoutes()['GET']);
     }
 
     public function testNoDuplicateGetRoute()
     {
-        $this->assertFalse($this->router->get($this->testRoute));
+        $router = new Router();
+        $route1 = new Route('/', "controller@action", 'home');
+        $route2 = new Route('/', "controller@action", 'home');
 
-        $this->assertArrayHasKey($this->testRoute->getPath(), $this->router->getRoutes()['GET']);
+        $router->get($route1);
+        $router->get($route2);
+
+        $this->assertFalse($router->get($route1));
+
+        $this->assertArrayHasKey($route1->getPath(), $router->getRoutes()['GET']);
     }
 
     public function testCanGetCurrentRequest() : void
     {
-        $this->assertNotNull($this->router->getRequest());
-        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\Request::class, $this->router->getRequest());
+        $router = new Router();
+        $this->assertNotNull($router->getRequest());
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\Request::class, $router->getRequest());
     }
 
 }

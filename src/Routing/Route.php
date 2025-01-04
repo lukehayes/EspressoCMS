@@ -44,7 +44,6 @@ class Route
      */
     public function __construct($path, mixed $controller, $name)
     {
-
         // TODO Implement callable controller functionality.
         if(is_string($controller))
         {
@@ -53,17 +52,18 @@ class Route
                 $splitString = (preg_split("/@/", $controller));
                 $this->controller = $splitString[0];
                 $this->action = $splitString[1];
-            } else {
-                $this->isCallback = false;
-                $this->controller = $controller;
+            }else
+            {
+                // TODO Clean up error handling. This is here just for my own sanity.
+                throw new \Exception('$controller arg should contain an "' . Route::SEPERATOR . '" character.');
             }
+
+
         }else if(is_callable($controller))
         {
             $this->isCallback = true;
             $this->controller = $controller;
         }
-
-        
 
         $this->path       = $path;
         //$this->action     = $action;

@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 
 use Espresso\Routing\Route;
 
-final class RoutControllerTest  extends TestCase
+final class RouteControllerTest  extends TestCase
 {
     public $router        = NULL;
     public $routeController   = NULL;

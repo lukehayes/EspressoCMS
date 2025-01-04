@@ -48,8 +48,8 @@ class Route
         // TODO Implement callable controller functionality.
         if(is_string($controller))
         {
-            if (str_contains($controller, self::SEPERATOR)) {
-                $this->isCallback = true;
+            if (str_contains($controller, Route::SEPERATOR)) {
+                $this->isCallback = false;
                 $splitString = (preg_split("/@/", $controller));
                 $this->controller = $splitString[0];
                 $this->action = $splitString[1];

@@ -68,6 +68,7 @@ class Router
             $response->send();
         }else
         {
+            // TODO Need to check for Closure style routes.
             if($this->routeAvailable())
             {
                 $routeObject = $this->routes[$method][$uri];

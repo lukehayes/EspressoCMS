@@ -21,7 +21,6 @@ final class RouterTest  extends TestCase
         $this->routeCallbackRouter = new Router();
         $this->routeCallback = new Route('/', function() { dump("Route Callback"); }, 'home_closure');
         $this->routeCallbackRouter->get($this->routeClass);
-
     }
 
     public function testCanGetNamedRoute()
@@ -54,6 +53,32 @@ final class RouterTest  extends TestCase
         $this->assertFalse($router->hasNamedRoute('notset', 'GET'));
     }
 
+    public function testCanGetNamedRouteForPost() : void
+    {
+        $router = new Router();
+        $route = new Route("/login", 'controller@login', 'login');
+
+        $router->post($route);
+
+        $route = $router->getNamedRoute('login', 'POST');
+
+        $this->assertNotNull($route, 'POST Route name should exist inside Router');
+
+        $this->assertNull($router->getNamedRoute('post_route_does_not_exist'), 'POST Route name should not exist inside Router.');
+
+        $this->assertInstanceOf(Route::class, $route);
+    }
+
+    public function testDoesHaveNamedRouteForPost()
+    {
+        $router = new Router();
+        $firstRoute = new Route('/login', 'controller@action', 'login');
+
+        $router->post($firstRoute);
+
+        $this->assertTrue($router->hasNamedRoute('login', 'POST'));
+        $this->assertFalse($router->hasNamedRoute('notset', 'POST'));
+    }
 
     public function testCanAddGetRoute()
     {

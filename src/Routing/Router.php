@@ -90,6 +90,7 @@ class Router
                 }
             }else
             {
+                // TODO Implement a 'prettier' solution than a text 404.
                 $response = new Response('No Route Found', Response::HTTP_NOT_FOUND);
                 $response->send();
             }

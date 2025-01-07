@@ -72,13 +72,22 @@ class Router
             if($this->routeAvailable())
             {
                 $routeObject = $this->routes[$method][$uri];
-                $controller  = new ($routeObject->getController());
-                $action      = $routeObject->getAction();
 
-                $controller->$action(
-                    $this->request
-                );
-
+                // Is the route defined as a closure or with a string?
+                if($routeObject->isCallback())
+                {
+                    $routeObject->getController(
+                    )($this->request);
+                }else
+                {
+                    // If we reach here then the route is defined as a string
+                    // with the format 'controllername@action'.
+                    $controller  = new ($routeObject->getController());
+                    $action      = $routeObject->getAction();
+                    $controller->$action(
+                        $this->request
+                    );
+                }
             }else
             {
                 $response = new Response('No Route Found', Response::HTTP_NOT_FOUND);

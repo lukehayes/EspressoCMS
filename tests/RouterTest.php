@@ -111,6 +111,16 @@ final class RouterTest  extends TestCase
         $this->assertArrayHasKey($route1->getPath(), $router->getRoutes()['GET']);
     }
 
+
+    public function testRouteIsClosure() : void
+    {
+        $routeClosure = new Route('/', function() {}, 'route_closure');
+        $nonRouteClosure = new Route('/', "controller@action", 'non_route_closure');
+
+        $this->assertIsCallable($routeClosure->getController());
+        $this->assertIsNotCallable($nonRouteClosure);
+    }
+
     public function testCanGetCurrentRequest() : void
     {
         $router = new Router();

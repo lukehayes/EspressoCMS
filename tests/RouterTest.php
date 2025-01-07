@@ -111,7 +111,6 @@ final class RouterTest  extends TestCase
         $this->assertArrayHasKey($route1->getPath(), $router->getRoutes()['GET']);
     }
 
-
     public function testRouteIsClosure() : void
     {
         $routeClosure = new Route('/', function() {}, 'route_closure');

@@ -66,8 +66,6 @@ class Route
         }
 
         $this->path       = $path;
-        //$this->action     = $action;
-        //$this->controller = $controller;
         $this->name       = $name;
     }
 

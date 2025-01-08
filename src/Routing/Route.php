@@ -44,27 +44,7 @@ class Route
      */
     public function __construct($path, mixed $controller, $name)
     {
-        // TODO Implement callable controller functionality.
-        if(is_string($controller))
-        {
-            if (str_contains($controller, Route::SEPERATOR)) {
-                $this->isCallback = false;
-                $splitString = (preg_split("/@/", $controller));
-                $this->controller = $splitString[0];
-                $this->action = $splitString[1];
-            }else
-            {
-                // TODO Clean up error handling. This is here just for my own sanity.
-                throw new \Exception('$controller arg should contain an "' . Route::SEPERATOR . '" character.');
-            }
-
-
-        }else if(is_callable($controller))
-        {
-            $this->isCallback = true;
-            $this->controller = $controller;
-        }
-
+        $this->parseController($controller);
         $this->path       = $path;
         $this->name       = $name;
     }
@@ -117,5 +97,36 @@ class Route
     public function isCallback() : bool
     {
         return $this->isCallback;
+    }
+
+    /**
+     * Parse the controller constructor argument to check if has the correct
+     * format and if it is also in the closure style.
+     *
+     * @throws Exception.
+     *
+     * @return void
+     */
+    private function parseController($controller)
+    {
+        // TODO Refactor this so that it is more readable.
+        if(is_string($controller))
+        {
+            if (str_contains($controller, Route::SEPERATOR)) {
+                $this->isCallback = false;
+                $splitString = (preg_split("/@/", $controller));
+                $this->controller = $splitString[0];
+                $this->action = $splitString[1];
+            }else
+            {
+                // TODO Clean up error handling. This is here just for my own sanity.
+                throw new \Exception('$controller arg should contain an "' . Route::SEPERATOR . '" character.');
+            }
+
+        }else if(is_callable($controller))
+        {
+            $this->isCallback = true;
+            $this->controller = $controller;
+        }
     }
 }

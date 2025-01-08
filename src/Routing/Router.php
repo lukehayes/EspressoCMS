@@ -139,18 +139,14 @@ class Router
      */
     public function getNamedRoute(string $name, $method = 'GET') : ?Route
     {
-
-        foreach($this->routes[$method] as $route)
+        $route = array_filter($this->routes[$method], function($r) use ($name)
         {
-            if($route->getName() == $name)
-            {
-                return $route;
-            }
+            return $r->getName() == $name;
+        });
 
-            break;
-        }
+        $isArrayAndNotEmpty = fn($r) => is_array($r) && count($r) > 0;
 
-        return NULL;
+        return $isArrayAndNotEmpty($route) ? array_shift($route) : null;
     }
 
     /**

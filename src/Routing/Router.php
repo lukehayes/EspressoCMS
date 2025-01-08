@@ -144,9 +144,10 @@ class Router
             return $r->getName() == $name;
         });
 
-        $isArrayAndNotEmpty = fn($r) => is_array($r) && count($r) > 0;
-
-        return $isArrayAndNotEmpty($route) ? array_shift($route) : null;
+        // array_filter always returns an array so if a Route isn't found
+        // then it will just return an empty array. If there is a Route
+        // then we just get the first result and return that.
+        return count($route) > 0 ? array_shift($route) : null;
     }
 
     /**
